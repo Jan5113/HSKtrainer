@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 x:Class="HSKtrain2.Views.MenuPage"
+			 BackgroundColor="Black"
+			 Title="Menu">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#c4c4c4</Color>
+            <Color x:Key="Secodary">#001730</Color>
+            <Color x:Key="Accent">#0058b7</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout Spacing="10" VerticalOptions="FillAndExpand">
+        <StackLayout Spacing="0">
+            <StackLayout VerticalOptions="Start" Orientation="Horizontal" BackgroundColor="{StaticResource Secodary}" Padding="15, 10, 15, 10">
+                <StackLayout Spacing="0" Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                    <Label Text="HSK" HorizontalOptions="Start" FontAttributes="Bold"
+                     FontSize="30" TextColor="{StaticResource Primary}"/>
+                    <Label Text="trainer"
+                     FontSize="30" TextColor="{StaticResource Primary}"/>
+                </StackLayout>
+                <Label IsVisible="False" Text="Due:" FontSize="20" TextColor="{StaticResource Primary}" VerticalOptions="Center" HorizontalOptions="End"/>
+                <DatePicker IsVisible="False" MinimumDate="{Binding MinDate}" MaximumDate="{Binding MaxDate}" Date="{Binding SelectedDate}" d:Date="04/15/2020" 
+                        TextColor="{StaticResource Primary}" FontSize="20" TranslationY="2" Format="dd.MM.yyyy" HorizontalOptions="End" x:Name="DueDatePicker"/>
+            </StackLayout>
+            <BoxView HeightRequest="4" BackgroundColor="{StaticResource Accent}"></BoxView>
+        </StackLayout>
+
+        
+        <StackLayout VerticalOptions="CenterAndExpand">
+            <Label Text="Progress Overview"  Padding="15, 0" FontSize="20" TextColor="{StaticResource Primary}"/>
+
+            <Grid Padding="0" Margin="0" RowSpacing="0" VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*" />
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="30*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <BoxView Grid.ColumnSpan="4" Grid.Row="{Binding SelectedSet}" d:Grid.Row="2" Grid.Column="0" BackgroundColor="{StaticResource Secodary}"></BoxView>
+                <Label Text="○○○○○" FontSize="20" TextColor="{StaticResource Primary}" Grid.Column="1" Grid.Row="0" VerticalOptions="Center" HorizontalOptions="Center" TranslationY="-2"/>
+                <Label Text="●○○○○" FontSize="20" TextColor="{StaticResource Primary}" Grid.Column="1" Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center" TranslationY="-2"/>
+                <Label Text="●●○○○" FontSize="20" TextColor="{StaticResource Primary}" Grid.Column="1" Grid.Row="2" VerticalOptions="Center" HorizontalOptions="Center" TranslationY="-2"/>
+                <Label Text="●●●○○" FontSize="20" TextColor="{StaticResource Primary}" Grid.Column="1" Grid.Row="3" VerticalOptions="Center" HorizontalOptions="Center" TranslationY="-2"/>
+                <Label Text="●●●●○" FontSize="20" TextColor="{StaticResource Primary}" Grid.Column="1" Grid.Row="4" VerticalOptions="Center" HorizontalOptions="Center" TranslationY="-2"/>
+                <Label Text="●●●●●" FontSize="20" TextColor="{StaticResource Primary}" Grid.Column="1" Grid.Row="5" VerticalOptions="Center" HorizontalOptions="Center" TranslationY="-2"/>
+                <ProgressBar Grid.Column="2" Grid.Row="0" Progress="{Binding Progress0}" d:Progress="1.0" ProgressColor="{StaticResource Accent}" ScaleY="5"/>
+                <ProgressBar Grid.Column="2" Grid.Row="1" Progress="{Binding Progress1}" d:Progress="0.1" ProgressColor="{StaticResource Accent}" ScaleY="5"/>
+                <ProgressBar Grid.Column="2" Grid.Row="2" Progress="{Binding Progress2}" d:Progress="0.15" ProgressColor="{StaticResource Accent}" ScaleY="5"/>
+                <ProgressBar Grid.Column="2" Grid.Row="3" Progress="{Binding Progress3}" d:Progress="0.14" ProgressColor="{StaticResource Accent}" ScaleY="5"/>
+                <ProgressBar Grid.Column="2" Grid.Row="4" Progress="{Binding Progress4}" d:Progress="0.4" ProgressColor="{StaticResource Accent}" ScaleY="5"/>
+                <ProgressBar Grid.Column="2" Grid.Row="5" Progress="{Binding Progress5}" d:Progress="0.3" ProgressColor="{StaticResource Accent}" ScaleY="5"/>
+
+                <BoxView Grid.ColumnSpan="4" Grid.Row="0" Grid.Column="0" HeightRequest="60">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnSet0}"/>
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+                <BoxView Grid.ColumnSpan="4" Grid.Row="1" Grid.Column="0">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnSet1}"/>
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+                <BoxView Grid.ColumnSpan="4" Grid.Row="2" Grid.Column="0">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnSet2}"/>
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+                <BoxView Grid.ColumnSpan="4" Grid.Row="3" Grid.Column="0">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnSet3}"/>
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+                <BoxView Grid.ColumnSpan="4" Grid.Row="4" Grid.Column="0">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnSet4}"/>
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+                <BoxView Grid.ColumnSpan="4" Grid.Row="5" Grid.Column="0">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnSet5}"/>
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+            </Grid>
+        </StackLayout>
+
+        <BoxView HeightRequest="4" BackgroundColor="{StaticResource Accent}"></BoxView>
+
+        <StackLayout VerticalOptions="Start" Padding="0, 10">
+            <Label Text="Session Settings"  Padding="15, 0" FontSize="20" TextColor="{StaticResource Primary}"/>
+            <Grid Padding="15, 0, 15, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{Binding StarredText}" d:Text="✍" FontSize="25" TextColor="{StaticResource Primary}" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center"/>
+                <Label Text="{Binding ModeText}" d:Text="👀" FontSize="25" TextColor="{StaticResource Primary}" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center"/>
+                <Label Text="1" FontSize="30" TextColor="{StaticResource Primary}" Grid.Column="2" Grid.Row="0"  HorizontalOptions="Center"/>
+                <Label Text="2" FontSize="30" TextColor="{StaticResource Primary}" Grid.Column="3" Grid.Row="0"  HorizontalOptions="Center"/>
+                <Label Text="3" FontSize="30" TextColor="{StaticResource Primary}" Grid.Column="4" Grid.Row="0"  HorizontalOptions="Center"/>
+                <Label Text="4" FontSize="30" TextColor="{StaticResource Primary}" Grid.Column="5" Grid.Row="0"  HorizontalOptions="Center"/>
+                <Switch Toggled="OnToggleStarred" ThumbColor="{StaticResource Accent}" OnColor="#0073ef" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center"/>
+                <Switch Toggled="OnToggleMode" ThumbColor="{StaticResource Accent}" OnColor="#0073ef" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center"/>
+                <CheckBox IsChecked="true" CheckedChanged="OnL1Changed" Color="{StaticResource Primary}" Grid.Column="2" Grid.Row="1" HorizontalOptions="Center"/>
+                <CheckBox IsChecked="true" CheckedChanged="OnL2Changed" Color="{StaticResource Primary}" Grid.Column="3" Grid.Row="1" HorizontalOptions="Center"/>
+                <CheckBox IsChecked="true" CheckedChanged="OnL3Changed" Color="{StaticResource Primary}" Grid.Column="4" Grid.Row="1" HorizontalOptions="Center"/>
+                <CheckBox IsChecked="true" CheckedChanged="OnL4Changed" Color="{StaticResource Primary}" Grid.Column="5" Grid.Row="1" HorizontalOptions="Center"/>
+
+            </Grid>
+            <StackLayout Orientation="Horizontal" VerticalOptions="Start" Padding="15, 10">
+                <Label Text="Amount:" FontSize="20" TextColor="{StaticResource Primary}" VerticalOptions="Center" HorizontalOptions="Start"/>
+                <Label Text="{Binding NumVocs}" FontSize="20" d:Text="12"  TextColor="{StaticResource Primary}" VerticalOptions="Center"
+                       HorizontalOptions="StartAndExpand" FontAttributes="Bold"/>
+                <Button Margin="0" Text="-1" WidthRequest="50" HeightRequest="50" FontSize="20" Command="{Binding StepperLess}" HorizontalOptions="End"
+                        BackgroundColor="{StaticResource Accent}" TextColor="{StaticResource Primary}"/>
+                <Button Margin="0" Text="+1" WidthRequest="50" HeightRequest="50" FontSize="20" Command="{Binding StepperMore}" HorizontalOptions="End"
+                        BackgroundColor="{StaticResource Accent}" TextColor="{StaticResource Primary}"/>
+                <Button Margin="0" Text="½" WidthRequest="50" HeightRequest="50" FontSize="20" Command="{Binding StepperHalf}" HorizontalOptions="End"
+                        BackgroundColor="{StaticResource Accent}" TextColor="{StaticResource Primary}"/>
+                <Button Margin="0" Text="1" WidthRequest="50" HeightRequest="50" FontSize="20" Command="{Binding StepperAll}" HorizontalOptions="End"
+                        BackgroundColor="{StaticResource Accent}" TextColor="{StaticResource Primary}"/>
+            </StackLayout>
+        </StackLayout>
+
+        <StackLayout Spacing="0" VerticalOptions="End">
+            <BoxView HeightRequest="4" BackgroundColor="{StaticResource Accent}"></BoxView>
+            <Button Margin="0" Text="Start Session" FontSize="30"
+				Command="{Binding Train}"
+                Padding="25"
+                BackgroundColor="{StaticResource Secodary}"
+				TextColor="{StaticResource Primary}" 
+                IsEnabled="{Binding TrainEnabled}"/>
+
+        </StackLayout>
+    </StackLayout>
+
+</ContentPage>

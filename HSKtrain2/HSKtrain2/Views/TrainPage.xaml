@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            mc:Ignorable="d"
+            x:Class="HSKtrain2.Views.TrainPage"
+			BackgroundColor="Black"
+            Title="Train">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#c4c4c4</Color>
+            <Color x:Key="Secodary">#001730</Color>
+            <Color x:Key="Accent">#0058b7</Color>
+            <Color x:Key="Red">#750103</Color>
+            <Color x:Key="Green">#0a7501</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <StackLayout Padding="0" Spacing="10">
+        <StackLayout Spacing="0">
+            <StackLayout VerticalOptions="Start" Orientation="Horizontal" BackgroundColor="{StaticResource Secodary}" Padding="15, 10, 25, 10">
+                <Label Text=" ← " HorizontalOptions="Start" FontAttributes="Bold"
+                    FontSize="30" TextColor="{StaticResource Primary}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnBackToMenu}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{Binding StarredText}" d:Text="★" HorizontalOptions="EndAndExpand"
+                    FontSize="30" TextColor="{StaticResource Primary}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnToggleStarred}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            <BoxView HeightRequest="4" BackgroundColor="{StaticResource Accent}"></BoxView>
+        </StackLayout>
+        <StackLayout Padding="16,20,16,20" Spacing="10" VerticalOptions="CenterAndExpand">
+            <Label Text="{Binding PinYinText}"
+                   FontSize="32" HorizontalOptions="Center"
+                   TextColor="DarkGray"/>
+            <Label Text="{Binding CharacterText}"
+                   FontSize="{Binding CharacterSize}" FontAttributes="Bold"
+                   HorizontalOptions="Center" 
+                   TextColor="DarkGray"/>
+            <Label Text="{Binding TranslationText}"
+                   FontSize="20" LineBreakMode="WordWrap"
+                   HorizontalOptions="Center" 
+                   TextColor="DarkGray"/>
+        </StackLayout>
+        <StackLayout Padding="0,20" HeightRequest="130"  HorizontalOptions="CenterAndExpand" Spacing="20"
+                    VerticalOptions="End" Orientation="Horizontal">
+            <Button Margin="10,10,10,0" Text="✗" FontSize="70"
+                IsVisible="{Binding AnswerButtonVisible}"
+                Command="{Binding OnIncorrectAnswer}"
+                BackgroundColor="DarkRed"
+                WidthRequest="160"
+                TextColor="DarkGray" />
+            <Button Margin="10,10,10,0" Text="✓" FontSize="70"
+                IsVisible="{Binding AnswerButtonVisible}"
+                Command="{Binding OnCorrectAnswer}"
+                BackgroundColor="DarkGreen"
+                WidthRequest="160"
+                TextColor="DarkGray" />
+            <Button Margin="10,10,10,0" Text="{Binding NextButtonText}" FontSize="70"
+                IsVisible="{Binding NextButtonVisible}"
+                Command="{Binding OnNext}"
+                BackgroundColor="#002038"
+                WidthRequest="360"
+                TextColor="DarkGray" />
+        </StackLayout>
+
+    </StackLayout>
+</ContentPage>
