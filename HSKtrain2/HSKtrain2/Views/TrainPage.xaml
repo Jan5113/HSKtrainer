@@ -40,7 +40,11 @@
         <StackLayout Padding="16,20,16,20" Spacing="10" VerticalOptions="CenterAndExpand">
             <Label Text="{Binding PinYinText}"
                    FontSize="32" HorizontalOptions="Center"
-                   TextColor="DarkGray"/>
+                   TextColor="DarkGray">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OnPlayPinYin}"/>
+                </Label.GestureRecognizers>
+            </Label>
             <Label Text="{Binding CharacterText}"
                    FontSize="{Binding CharacterSize}" FontAttributes="Bold"
                    HorizontalOptions="Center" 

@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Windows.Input;
 using HSKtrain2.Models;
+using HtmlAgilityPack;
+using MediaManager;
 using Xamarin.Forms;
 
 namespace HSKtrain2.ViewModels {
@@ -88,6 +90,12 @@ namespace HSKtrain2.ViewModels {
             }
         }
 
+        float progress = 0;
+        public float Progress {
+            get { return progress; }
+            set { SetProperty(ref progress, value); }
+        }
+
         string Character = "";
         string PinYin = "";
         string Translation = "";
@@ -98,6 +106,7 @@ namespace HSKtrain2.ViewModels {
         public ICommand OnBackToMenu { get; }
         public ICommand OnNext { get; }
         public ICommand OnToggleStarred { get; }
+        public ICommand OnPlayPinYin { get; }
 
         public TrainingViewModel(App app) {
             App = app;
@@ -114,6 +123,11 @@ namespace HSKtrain2.ViewModels {
             OnToggleStarred = new Command(() => {
                 if (Session.ToggleStarred()) StarredText = "★";
                 else StarredText = "☆";
+            });
+            OnPlayPinYin = new Command(() => {
+                if (PinYinVisible) {
+                    PlaySound(Session.GetThis());
+                }
             });
         }
 
@@ -221,6 +235,27 @@ namespace HSKtrain2.ViewModels {
             }
             if (v.IsStarred(Session.GetMode())) StarredText = "★";
             else StarredText = "☆";
+        }
+
+        public async void PlaySound(Voc v) {
+            string searchString = "https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=" + v.Character;
+            HtmlWeb web = new HtmlWeb();
+            HtmlDocument htmlDoc = web.Load(searchString);
+
+            HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//body/section/div/ul[@id='search_results']/li/div/span[@class='word']");
+
+            foreach (HtmlNode node in nodes) {
+                HtmlNodeCollection wordParse = node.SelectNodes(".//a");
+                string word = "";
+                foreach (HtmlNode singleParse in wordParse) {
+                    word += singleParse.InnerText;
+                }
+                if (word == v.Character) {
+                    await CrossMediaManager.Current.Play(node.SelectSingleNode(".//i").Attributes["data-audio_url"].Value);
+                    break;
+                }
+            }
+
         }
 
         public void SetSession(Session session) {

@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using MediaManager;
 
 namespace HSKtrain2.Droid
 {
@@ -20,6 +21,7 @@ namespace HSKtrain2.Droid
             base.OnCreate(savedInstanceState);
 
 			string vocPath = FileAccessHelper.GetLocalFilePath("HSK_Voc.csv");
+			CrossMediaManager.Current.Init(this);
 
 			Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

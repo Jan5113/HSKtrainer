@@ -39,6 +39,10 @@ namespace HSKtrain2.Models {
             return MainVocs.GetVoc(SessionVocIds[Index]);
         }
 
+        public Voc GetThis() {
+            return MainVocs.GetVoc(SessionVocIds[Index]);
+        }
+
         public void ResetSession() {
             Index = 0;
             SessionWasReset = true;
