@@ -4,6 +4,7 @@ using Xamarin.Forms.Xaml;
 using HSKtrain2.Services;
 using HSKtrain2.Views;
 using HSKtrain2.Models;
+using System.Diagnostics;
 
 namespace HSKtrain2 {
     public partial class App : Application {
@@ -24,6 +25,11 @@ namespace HSKtrain2 {
         public void SetMenuPage() {
             MainPage = MenuPage;
             MenuPage.Refresh();
+        }
+
+        public void SetDefinitionPage(DefinitionPage dp) {
+            Debug.WriteLine("Setting DefPage");
+            MainPage = dp;
         }
 
         public void SetSession(Session session) {

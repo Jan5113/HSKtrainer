@@ -14,10 +14,12 @@ namespace HSKtrain2.Views {
     [DesignTimeVisible(false)]
     public partial class TrainPage : ContentPage {
         readonly TrainingViewModel TrainViewModel;
+        readonly App App;
 
 
         public TrainPage(App app) {
             InitializeComponent();
+            App = app;
             BindingContext = TrainViewModel = new TrainingViewModel(app);
         }
 
@@ -28,5 +30,10 @@ namespace HSKtrain2.Views {
         public bool HasActiveSession() {
             return TrainViewModel.HasActiveSession();
         }
+        protected override bool OnBackButtonPressed() {
+            App.SetMenuPage();
+            return true;
+        }
     }
+
 }

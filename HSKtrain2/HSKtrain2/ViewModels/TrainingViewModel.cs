@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
 using HSKtrain2.Models;
+using HSKtrain2.Views;
 using HtmlAgilityPack;
 using MediaManager;
 using Xamarin.Forms;
@@ -12,14 +13,51 @@ namespace HSKtrain2.ViewModels {
         Session Session;
         bool SessionOver = false;
 
-        string characterText = string.Empty;
-        public string CharacterText {
-            get { return characterText; }
-            set { SetProperty(ref characterText, value); }
+        string characterText1 = string.Empty;
+        public string CharacterText1 {
+            get { return characterText1; }
+            set { SetProperty(ref characterText1, (value[0]).ToString()); }
+        }
+
+        string characterText2 = string.Empty;
+        public string CharacterText2 {
+            get { return characterText2; }
+            set { 
+                if (value.Length > 1) {
+                    SetProperty(ref characterText2, (value[1]).ToString());
+                } else {
+                    SetProperty(ref characterText2, "");
+                };}
+        }
+
+        string characterText3 = string.Empty;
+        public string CharacterText3 {
+            get { return characterText3; }
+            set {
+                if (value.Length > 2) {
+                    SetProperty(ref characterText3, (value[2]).ToString());
+                } else {
+                    SetProperty(ref characterText3, "");
+                };
+            }
+        }
+
+        string characterText4 = string.Empty;
+        public string CharacterText4 {
+            get { return characterText4; }
+            set {
+                if (value.Length > 3) {
+                    SetProperty(ref characterText4, (value[3]).ToString());
+                } else {
+                    SetProperty(ref characterText4, "");
+                };
+            }
         }
 
 
         string pinYinText = string.Empty;
+
+
         public string PinYinText {
             get { return pinYinText; }
             set { SetProperty(ref pinYinText, value); }
@@ -59,8 +97,11 @@ namespace HSKtrain2.ViewModels {
             get { return characterVisible; }
             set {
                 characterVisible = value;
-                if (value) CharacterText = Character;
-                else CharacterText = " ";
+                if (value) {
+                    CharacterText1 = CharacterText2 = CharacterText3 = CharacterText4 = Character;
+                } else {
+                    CharacterText1 = CharacterText2 = CharacterText3 = CharacterText4 = " ";
+                }
             }
         }
 
@@ -107,6 +148,10 @@ namespace HSKtrain2.ViewModels {
         public ICommand OnNext { get; }
         public ICommand OnToggleStarred { get; }
         public ICommand OnPlayPinYin { get; }
+        public ICommand OnChar1 { get; }
+        public ICommand OnChar2 { get; }
+        public ICommand OnChar3 { get; }
+        public ICommand OnChar4 { get; }
 
         public TrainingViewModel(App app) {
             App = app;
@@ -128,6 +173,22 @@ namespace HSKtrain2.ViewModels {
                 if (PinYinVisible) {
                     PlaySound(Session.GetThis());
                 }
+            });
+            OnChar1 = new Command(() => {
+                Debug.WriteLine("OnChar1");
+                if (CharacterVisible) GetDefinition((Character[0]).ToString());
+            });
+            OnChar2 = new Command(() => {
+                Debug.WriteLine("OnChar2");
+                if (CharacterVisible) GetDefinition((Character[1]).ToString());
+            });
+            OnChar3 = new Command(() => {
+                Debug.WriteLine("OnChar3");
+                if (CharacterVisible) GetDefinition((Character[2]).ToString());
+            });
+            OnChar4 = new Command(() => {
+                Debug.WriteLine("OnChar4");
+                if (CharacterVisible) GetDefinition((Character[3]).ToString());
             });
         }
 
@@ -215,6 +276,7 @@ namespace HSKtrain2.ViewModels {
                 SessionOver = CharacterVisible = PinYinVisible = TranslationVisible = true;
                 NextButtonVisible = false;
                 StarredText = "";
+                Progress = Session.GetProgress();
                 return;
             }
             Character = v.Character;
@@ -245,19 +307,56 @@ namespace HSKtrain2.ViewModels {
             HtmlDocument htmlDoc = web.Load(searchString);
 
             HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//body/section/div/ul[@id='search_results']/li/div/span[@class='word']");
-
-            foreach (HtmlNode node in nodes) {
-                HtmlNodeCollection wordParse = node.SelectNodes(".//a");
-                string word = "";
-                foreach (HtmlNode singleParse in wordParse) {
-                    word += singleParse.InnerText;
-                }
-                if (word == v.Character) {
-                    await CrossMediaManager.Current.Play(node.SelectSingleNode(".//i").Attributes["data-audio_url"].Value);
-                    break;
+            if (nodes != null) {
+                foreach (HtmlNode node in nodes) {
+                    HtmlNodeCollection wordParse = node.SelectNodes(".//a");
+                    string word = "";
+                    foreach (HtmlNode singleParse in wordParse) {
+                        word += singleParse.InnerText;
+                    }
+                    if (word == v.Character) {
+                        await CrossMediaManager.Current.Play(node.SelectSingleNode(".//i").Attributes["data-audio_url"].Value);
+                        break;
+                    }
                 }
             }
 
+        }
+
+        public void GetDefinition(string c) { 
+            List<CharDef> list = new List<CharDef>();
+
+            string searchString = "https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=" + c;
+            Debug.WriteLine(searchString);
+            HtmlWeb web = new HtmlWeb();
+            HtmlDocument htmlDoc = web.Load(searchString);
+            string definition = "";
+            string pinYin = "";
+            HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//body/section/div/ul[@id='search_results']/li[not(@class='promo')]");
+
+            if (nodes != null) {
+                foreach (HtmlNode node in nodes) {
+                    HtmlNodeCollection wordParse = node.SelectNodes(".//div[contains(@class, 'term')]/span[@class='word']/a");
+                    HtmlNode pinYinParse = node.SelectSingleNode(".//div[@class='definition']/span[@class='pinyin']");
+                    HtmlNode meaningParse = node.SelectSingleNode(".//div[@class='definition']/div[@class='meaning']");
+                    string word = "";
+                    if (wordParse != null) {
+                        foreach (HtmlNode singleParse in wordParse) {
+                            word += singleParse.InnerText;
+                        }
+                    }
+                    if (pinYinParse != null) pinYin = pinYinParse.InnerText;
+                    if (meaningParse != null) definition = meaningParse.InnerText;
+                    list.Add(new CharDef { Char = word, PinYin = pinYin, Definition = definition });
+                }
+            }
+
+            App.SetDefinitionPage(new DefinitionPage(this, list.ToArray()));
+        }
+
+
+        public void SetTrainPage() {
+            App.SetTrainPage();
         }
 
         public void SetSession(Session session) {

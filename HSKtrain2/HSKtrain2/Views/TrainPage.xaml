@@ -44,13 +44,40 @@
                    FontSize="32" HorizontalOptions="Center"
                    TextColor="DarkGray">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding OnPlayPinYin}"/>
+                    <TapGestureRecognizer Command="{Binding OnPlayPinYin}"  NumberOfTapsRequired="2"/>
                 </Label.GestureRecognizers>
             </Label>
-            <Label Text="{Binding CharacterText}"
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="0">
+                <Label Text="{Binding CharacterText1}" d:Text="年"
+                        FontSize="{Binding CharacterSize}" FontAttributes="Bold"
+                        TextColor="DarkGray">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnChar1}" NumberOfTapsRequired="2"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{Binding CharacterText2}" d:Text="年"
                    FontSize="{Binding CharacterSize}" FontAttributes="Bold"
-                   HorizontalOptions="Center" 
-                   TextColor="DarkGray"/>
+                   TextColor="DarkGray">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnChar2}" NumberOfTapsRequired="2"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{Binding CharacterText3}" d:Text="一"
+                   FontSize="{Binding CharacterSize}" FontAttributes="Bold"
+                   TextColor="DarkGray">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnChar3}" NumberOfTapsRequired="2"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{Binding CharacterText4}" d:Text="年"
+                   FontSize="{Binding CharacterSize}" FontAttributes="Bold"
+                   TextColor="DarkGray">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnChar4}" NumberOfTapsRequired="2"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+           
             <Label Text="{Binding TranslationText}"
                    FontSize="20" LineBreakMode="WordWrap"
                    HorizontalOptions="Center" 

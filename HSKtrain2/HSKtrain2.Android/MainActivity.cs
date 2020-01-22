@@ -33,6 +33,8 @@ namespace HSKtrain2.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+
     }
 
 	public class FileAccessHelper {
