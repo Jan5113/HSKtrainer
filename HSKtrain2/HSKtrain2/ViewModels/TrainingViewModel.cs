@@ -199,6 +199,7 @@ namespace HSKtrain2.ViewModels {
             if (reset) {
                 Session.ResetSession();
                 HandleAction(0);
+                Progress = 0;
             } else {
                 Session = null;
                 App.SetMenuPage();
@@ -235,6 +236,7 @@ namespace HSKtrain2.ViewModels {
             }
             if (v.IsStarred(Session.GetMode())) StarredText = "★";
             else StarredText = "☆";
+            Progress = Session.GetProgress();
         }
 
         public async void PlaySound(Voc v) {

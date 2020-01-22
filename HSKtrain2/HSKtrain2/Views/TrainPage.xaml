@@ -28,7 +28,9 @@
                         <TapGestureRecognizer Command="{Binding OnBackToMenu}"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Text="{Binding StarredText}" d:Text="★" HorizontalOptions="EndAndExpand"
+                <ProgressBar Progress="{Binding Progress}" d:Progress="0.5" HorizontalOptions="FillAndExpand"
+                             ProgressColor="{StaticResource Accent}" ScaleY="5"/>
+                <Label Text="{Binding StarredText}" d:Text="★" HorizontalOptions="End"
                     FontSize="30" TextColor="{StaticResource Primary}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding OnToggleStarred}"/>

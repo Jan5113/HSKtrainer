@@ -70,5 +70,13 @@ namespace HSKtrain2.Models {
             return Mode;
         }
 
+        public float GetProgress() {
+            int c = 0;
+            foreach (bool b in VocCorr) {
+                if (b) c++;
+            }
+            return (float)c / (float)VocCorr.Length;
+        }
+
     }
 }
