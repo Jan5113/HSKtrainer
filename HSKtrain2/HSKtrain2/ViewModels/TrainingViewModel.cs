@@ -303,55 +303,60 @@ namespace HSKtrain2.ViewModels {
 
         public async void PlaySound(Voc v) {
             string searchString = "https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=" + v.Character;
-            HtmlWeb web = new HtmlWeb();
-            HtmlDocument htmlDoc = web.Load(searchString);
+            try {
+                HtmlWeb web = new HtmlWeb();
+                HtmlDocument htmlDoc = web.Load(searchString);
 
-            HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//body/section/div/ul[@id='search_results']/li/div/span[@class='word']");
-            if (nodes != null) {
-                foreach (HtmlNode node in nodes) {
-                    HtmlNodeCollection wordParse = node.SelectNodes(".//a");
-                    string word = "";
-                    foreach (HtmlNode singleParse in wordParse) {
-                        word += singleParse.InnerText;
-                    }
-                    if (word == v.Character) {
-                        await CrossMediaManager.Current.Play(node.SelectSingleNode(".//i").Attributes["data-audio_url"].Value);
-                        break;
-                    }
-                }
-            }
-
-        }
-
-        public void GetDefinition(string c) { 
-            List<CharDef> list = new List<CharDef>();
-
-            string searchString = "https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=" + c;
-            Debug.WriteLine(searchString);
-            HtmlWeb web = new HtmlWeb();
-            HtmlDocument htmlDoc = web.Load(searchString);
-            string definition = "";
-            string pinYin = "";
-            HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//body/section/div/ul[@id='search_results']/li[not(@class='promo')]");
-
-            if (nodes != null) {
-                foreach (HtmlNode node in nodes) {
-                    HtmlNodeCollection wordParse = node.SelectNodes(".//div[contains(@class, 'term')]/span[@class='word']/a");
-                    HtmlNode pinYinParse = node.SelectSingleNode(".//div[@class='definition']/span[@class='pinyin']");
-                    HtmlNode meaningParse = node.SelectSingleNode(".//div[@class='definition']/div[@class='meaning']");
-                    string word = "";
-                    if (wordParse != null) {
+                HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//body/section/div/ul[@id='search_results']/li/div/span[@class='word']");
+                if (nodes != null) {
+                    foreach (HtmlNode node in nodes) {
+                        HtmlNodeCollection wordParse = node.SelectNodes(".//a");
+                        string word = "";
                         foreach (HtmlNode singleParse in wordParse) {
                             word += singleParse.InnerText;
                         }
+                        if (word == v.Character) {
+                            await CrossMediaManager.Current.Play(node.SelectSingleNode(".//i").Attributes["data-audio_url"].Value);
+                            break;
+                        }
                     }
-                    if (pinYinParse != null) pinYin = pinYinParse.InnerText;
-                    if (meaningParse != null) definition = meaningParse.InnerText;
-                    list.Add(new CharDef { Char = word, PinYin = pinYin, Definition = definition });
                 }
-            }
+            } catch { }
 
-            App.SetDefinitionPage(new DefinitionPage(this, list.ToArray()));
+        }
+
+        public void GetDefinition(string c) {
+            List<CharDef> list = new List<CharDef>();
+            string searchString = "https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=" + c;
+            try {
+                Debug.WriteLine(searchString);
+                HtmlWeb web = new HtmlWeb();
+                HtmlDocument htmlDoc = web.Load(searchString);
+                string definition = "";
+                string pinYin = "";
+                HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//body/section/div/ul[@id='search_results']/li[not(@class='promo')]");
+
+                if (nodes != null) {
+                    foreach (HtmlNode node in nodes) {
+                        HtmlNodeCollection wordParse = node.SelectNodes(".//div[contains(@class, 'term')]/span[@class='word']/a");
+                        HtmlNode pinYinParse = node.SelectSingleNode(".//div[@class='definition']/span[@class='pinyin']");
+                        HtmlNode meaningParse = node.SelectSingleNode(".//div[@class='definition']/div[@class='meaning']");
+                        string word = "";
+                        if (wordParse != null) {
+                            foreach (HtmlNode singleParse in wordParse) {
+                                word += singleParse.InnerText;
+                            }
+                        }
+                        if (pinYinParse != null) pinYin = pinYinParse.InnerText;
+                        if (meaningParse != null) definition = meaningParse.InnerText;
+                        list.Add(new CharDef { Char = word, PinYin = pinYin, Definition = definition });
+                    }
+                }
+
+                App.SetDefinitionPage(new DefinitionPage(this, list.ToArray()));
+            } catch {
+
+            }
         }
 
 
